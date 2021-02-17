@@ -24,7 +24,6 @@ function DetailsHouse() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
   const [favHouseError, setFavHouseError] = useState();
-  const [favorite, setFavorite] = useState();
   const [open, setOpen] = useState(false);
 
   const { houseId } = useParams();
@@ -37,7 +36,6 @@ function DetailsHouse() {
   };
 
   const clear = () => {
-    setFavorite();
     setErrorMsg(null);
   };
 
@@ -57,10 +55,9 @@ function DetailsHouse() {
 
   const addedToFavorite = async () => {
     try {
-      const { data } = await Axios.get(`/api/v1/favorite/${houseId}`);
+      await Axios.get(`/api/v1/favorite/${houseId}`);
       clear();
       setOpen(true);
-      setFavorite(data.message);
     } catch (err) {
       setOpen(true);
       if (err.response.status === 401) {
@@ -95,7 +92,7 @@ function DetailsHouse() {
                 onClose={handleClose}
                 severity={favHouseError ? 'error' : 'success'}
               >
-                {favHouseError || favorite}
+                {favHouseError || 'House added  to favorite successfully'}
               </Alert>
             </Snackbar>
             <Grid xs="12" sm="12" md="6" lg="6" className={classes.imgSection}>
